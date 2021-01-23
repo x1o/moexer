@@ -24,6 +24,12 @@ You can install the released version of moexer from
 install.packages("moexer")
 ```
 
+or the latest version from github:
+
+``` r
+devtools::install_github("x1o/moexer")
+```
+
 ## Example
 
 Suppose you want to download monthly candles from Jan 1, 2020 until the
