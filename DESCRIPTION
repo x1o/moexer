@@ -32,3 +32,5 @@ Suggests:
     knitr,
     rmarkdown,
     ggplot2
+URL: https://github.com/x1o/moexer
+BugReports: https://github.com/x1o/moexer/issues
