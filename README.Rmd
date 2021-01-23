@@ -1,0 +1,84 @@
+---
+output:
+  github_document:
+      df_print: 'kable'
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#> ",
+  fig.path = "man/figures/README-"
+  # out.width = "100%"
+)
+```
+
+# moexer
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+Moscow Exchange (MOEX) provides a REST interface
+to its Informational and Statistical Server (ISS), see https://fs.moex.com/files/8888.
+
+`moexer` is a thin wrapper around the REST interface.  It allows to quickly 
+fetch e.g. price candles for a particular security, obtain its profile 
+information and so on.  The data is returned as `tibble`s, making it easy to 
+subsequently process and analyse it.
+
+## Installation
+
+You can install the released version of moexer from [CRAN](https://CRAN.R-project.org) with:
+
+``` r
+install.packages("moexer")
+```
+
+## Example
+
+Suppose you want to download monthly candles from Jan 1, 2020 until the present 
+day for the Sberbank common shares.
+
+```{r message=FALSE}
+library(moexer)
+library(dplyr)
+```
+
+Each security on MOEX has an ID, e.g. a 4-letter ticker symbol for a share
+("LKOH") or an ISIN for a bond ("RU000A0JXPU3").
+
+Find the corresponding security ID:
+
+```{r}
+search_security(query = 'Sberbank') %>% 
+    slice_head(n = 10) %>% 
+    select(secid, name, is_traded, type, primary_boardid)
+```
+
+We can verify that `SBER` is indeed the symbol we were looking for and check the profile information:
+
+```{r}
+sber_info <- get_security_info(secid = 'SBER')
+sber_info$description %>% 
+    select(name, title, value)
+sber_info$boards %>% 
+    slice_head(n = 10) %>% 
+    select(secid, boardid, title, is_traded, history_from, history_till, currencyid)
+```
+
+Fetch the `SBER` candles:
+
+```{r}
+get_candles(secid = 'SBER', from = '2020-01-01', interval = 'monthly')
+```
+
+`get_candles()` is vectorised over `secid`, so it is possible to, say, fetch 
+candles for both the common and the preffered shares:
+
+```{r}
+get_candles(secid = c('SBER', 'SBERP'), from = '2020-01-01', interval = 'monthly') %>% 
+    plot_candles()
+```
+
