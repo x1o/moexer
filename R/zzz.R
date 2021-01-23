@@ -15,4 +15,6 @@
 }
 
 if (getRversion() >= '2.15.1')
-    utils::globalVariables(c('is_primary'))
+    utils::globalVariables(c(
+        'is_primary', 'begin', 'direction', 'high', 'low', 'secid'
+    ))

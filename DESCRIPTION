@@ -1,12 +1,12 @@
 Package: moexer
 Type: Package
-Title: Interact with Moscow Exchange Informational and Statistical Server (ISS)
+Title: Interact with Moscow Exchange Informational and Statistical Server ('ISS')
 Version: 0.1.0
 Author: Dmitry Zotikov <dmitry.zotikov@ungrund.org>
 Maintainer: Dmitry Zotikov <dmitry.zotikov@ungrund.org>
-Description: This is a thin wrapper around the MOEX ISS REST interface.  It 
-    allows to quickly fetch price candles for a particular security, obtain its
-    profile information and so on.
+Description: This is a thin wrapper around the 'MOEX' 'ISS' REST interface.  
+    It allows to quickly fetch price candles for a particular security, obtain 
+    its profile information and so on.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
