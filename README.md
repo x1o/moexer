@@ -153,7 +153,7 @@ get_candles(secid = 'SBER', from = '2020-01-01', interval = 'monthly')
 </div>
 
 `get_candles()` is vectorised over `secid`, so it is possible to, say,
-fetch candles for both the common and the preffered
+fetch candles for both the common and the preferred
 shares:
 
 ``` r

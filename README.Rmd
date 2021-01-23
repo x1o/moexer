@@ -81,7 +81,7 @@ get_candles(secid = 'SBER', from = '2020-01-01', interval = 'monthly')
 ```
 
 `get_candles()` is vectorised over `secid`, so it is possible to, say, fetch 
-candles for both the common and the preffered shares:
+candles for both the common and the preferred shares:
 
 ```{r}
 get_candles(secid = c('SBER', 'SBERP'), from = '2020-01-01', interval = 'monthly') %>% 
