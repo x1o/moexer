@@ -11,5 +11,5 @@ There was 1 NOTE:
 ```
 > checking top-level files ... NOTE
   Non-standard file/directory found at top level:
-    ‘cran-submission.md’
+    ‘cran-comments.md’
 ```
