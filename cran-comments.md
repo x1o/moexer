@@ -1,3 +1,7 @@
+## Resubmission
+
+* Added cran-comments.md to .Rbuildignore
+
 ## Test environments
 
 * Ubuntu 18.04.4 LTS (local installation), R 4.0.2
