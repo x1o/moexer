@@ -1,3 +1,7 @@
+## Resubmission 2
+
+* Added the ISS URL to the Description field of the DESCRIPTION file as requested.
+
 ## Resubmission
 
 * Added cran-comments.md to .Rbuildignore
