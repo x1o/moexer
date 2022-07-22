@@ -64,7 +64,9 @@ get_candles <- function(secid, from, till = NULL, interval = 'monthly', ...) {
         return(secid_candles_df)
     }
 
-    candles_df <- secid |> map_dfr(function(secid) get_secid_candles(secid))
+    candles_df <- secid |>
+        map_dfr(function(secid) get_secid_candles(secid)) |>
+        append_class('MoexCandles')
 
     return(candles_df)
 }

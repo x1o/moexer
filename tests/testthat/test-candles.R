@@ -29,7 +29,7 @@ test_that("Specifying wrong symbols only returns an empty tibble", {
         `httr::GET` = function(url, ...) fake_httr_get(url),
         get_candles(secid = c('XXXX', 'YYYY'), from = '2020-01-01', debug_output = FALSE)
     )
-    ref_parsed_query <- tibble()
+    ref_parsed_query <- tibble() |> append_class('MoexCandles')
     expect_equal(parsed_query, ref_parsed_query)
 })
 
