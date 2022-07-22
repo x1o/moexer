@@ -37,7 +37,7 @@ See \url{http://iss.moex.com/iss/reference/} for the reference.
 query_iss(
     rest_path = 'securities/SBER',
     params = list(iss.only = 'description'),
-    debug = TRUE
+    debug_output = TRUE
 )
 }
 }

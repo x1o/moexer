@@ -8,9 +8,9 @@
 #' @examples
 #' \dontrun{
 #' get_candles(secid = 'SBER', from = '2020-01-01') |>
-#'     plot_candles()
+#'     plot()
 #' }
-plot_candles <- function(candles_df) {
+plot.MoexCandles <- function(candles_df) {
     candles_df |>
         mutate(
             direction = factor(case_when(

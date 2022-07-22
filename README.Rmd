@@ -77,14 +77,15 @@ sber_info$boards |>
 Fetch the `SBER` candles:
 
 ```{r}
-get_candles(secid = 'SBER', from = '2020-01-01', interval = 'monthly')
+get_candles(secid = 'SBER', from = '2020-01-01', interval = 'monthly') |> head()
 ```
 
 `get_candles()` is vectorised over `secid`, so it is possible to, say, fetch 
-candles for both the common and the preferred shares:
+candles for both the common and the preferred shares.  The returned object has
+class `MoexCandles` for which there's an appropriate `plot()` method:
 
 ```{r}
 get_candles(secid = c('SBER', 'SBERP'), from = '2020-01-01', interval = 'monthly') |> 
-    plot_candles()
+    plot()
 ```
 
