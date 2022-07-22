@@ -96,15 +96,18 @@ parse_iss_json_reponse <- function(iss_json_response) {
 
 parse_iss_response_section <- function(iss_response_section) {
     parse_type <- function(col, col_name) {
+        if (!is.character(col)) {
+            return(col)
+        }
         data_type <- iss_response_section$metadata[[col_name]]$type
         parse_fn <-
             switch(
                 data_type,
                 string = readr::parse_character,
-                # int32 = readr::parse_double,
-                # int64 = readr::parse_double,
-                int32 = function(x) x,
-                int64 = function(x) x,
+                int32 = readr::parse_double,
+                int64 = readr::parse_double,
+                # int32 = function(x) x,
+                # int64 = function(x) x,
                 date = readr::parse_date,
                 datetime = readr::parse_datetime,
                 double = readr::parse_double,
