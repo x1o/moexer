@@ -8,7 +8,8 @@ query_iss(
   rest_path,
   params = list(),
   iss_base_url = getOption("moexer.iss.base_url"),
-  debug_output = getOption("moexer.debug")
+  debug_output = getOption("moexer.debug"),
+  follow_cursor = TRUE
 )
 }
 \arguments{
@@ -19,6 +20,10 @@ query_iss(
 \item{iss_base_url}{The base ISS URL.}
 
 \item{debug_output}{Print REST URLs as they are queried.}
+
+\item{follow_cursor}{If \code{TRUE}, iterative queries will be issued to fetch all
+section pages as indicated by \verb{<section>.cursor}; the cursor section
+itself will be removed from the response.}
 }
 \value{
 A list where every element is section as returned by ISS.  The

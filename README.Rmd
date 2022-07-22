@@ -58,8 +58,8 @@ Each security on MOEX has an ID, e.g. a 4-letter ticker symbol for a share
 Find the corresponding security ID:
 
 ```{r}
-search_security(query = 'Sberbank') %>% 
-    slice_head(n = 10) %>% 
+search_security(query = 'Sberbank') |> 
+    slice_head(n = 10) |> 
     select(secid, name, is_traded, type, primary_boardid)
 ```
 
@@ -67,10 +67,10 @@ We can verify that `SBER` is indeed the symbol we were looking for and check the
 
 ```{r}
 sber_info <- get_security_info(secid = 'SBER')
-sber_info$description %>% 
+sber_info$description |> 
     select(name, title, value)
-sber_info$boards %>% 
-    slice_head(n = 10) %>% 
+sber_info$boards |> 
+    slice_head(n = 10) |> 
     select(secid, boardid, title, is_traded, history_from, history_till, currencyid)
 ```
 
@@ -84,7 +84,7 @@ get_candles(secid = 'SBER', from = '2020-01-01', interval = 'monthly')
 candles for both the common and the preferred shares:
 
 ```{r}
-get_candles(secid = c('SBER', 'SBERP'), from = '2020-01-01', interval = 'monthly') %>% 
+get_candles(secid = c('SBER', 'SBERP'), from = '2020-01-01', interval = 'monthly') |> 
     plot_candles()
 ```
 

@@ -19,7 +19,7 @@
 #' query_iss(
 #'     rest_path = 'securities/SBER',
 #'     params = list(iss.only = 'description'),
-#'     debug = TRUE
+#'     debug_output = TRUE
 #' )
 #' }
 query_iss <- function(
@@ -31,11 +31,11 @@ query_iss <- function(
     ) {
     iss_query_url <- glue('{iss_base_url}/{rest_path}.json')
     iss_param_str <-
-        params %>%
-        compact %>%
+        params |>
+        compact() |>
         imap_chr(function(val, name) {
             glue('{name}={val}')
-        }) %>%
+        }) |>
         paste0(collapse = '&')
     if (str_length(iss_param_str) > 0) {
         iss_query_url <- glue('{iss_query_url}?{iss_param_str}')
@@ -44,7 +44,7 @@ query_iss <- function(
         inform(iss_query_url)
     }
     resp_parsed <-
-        httr::GET(iss_query_url) %>%
+        httr::GET(iss_query_url) |>
         parse_iss_json_reponse()
     if (follow_cursor) {
         for (section_name in names(resp_parsed)) {
@@ -54,7 +54,7 @@ query_iss <- function(
                 source_section <- resp_parsed[[source_section_name]]
                 n_pages <- ceiling(cursor_section$TOTAL / cursor_section$PAGESIZE) - 1
                 remaining_section_pages <-
-                    seq_len(n_pages) %>%
+                    seq_len(n_pages) |>
                     map_dfr(function(page_n) {
                         query_iss(
                             rest_path,
@@ -85,9 +85,9 @@ query_iss <- function(
 
 parse_iss_json_reponse <- function(iss_json_response) {
     parsed_list <-
-        iss_json_response %>%
-        httr::content('text') %>%
-        jsonlite::fromJSON(simplifyVector = TRUE, simplifyMatrix = FALSE) %>%
+        iss_json_response |>
+        httr::content('text') |>
+        jsonlite::fromJSON(simplifyVector = TRUE, simplifyMatrix = FALSE) |>
         map(~ parse_iss_response_section(.x))
 
     return(parsed_list)
@@ -121,13 +121,13 @@ parse_iss_response_section <- function(iss_response_section) {
     }
 
     parsed_section <-
-        iss_response_section$data %>%
-        transpose(.names = iss_response_section$columns) %>%
+        iss_response_section$data |>
+        transpose(.names = iss_response_section$columns) |>
         imap(function(list_column, column_name) {
-            list_column %>%
-                unlist() %>%
+            list_column |>
+                unlist() |>
                 parse_type(column_name)
-        }) %>%
+        }) |>
         as_tibble()
 
     return(parsed_section)

@@ -1,9 +1,9 @@
 # determine_engine_market <- function(sec_info, secid) {
 #     engine_market <-
-#         sec_info$description %>%
-#         filter(name == 'GROUP') %>%
-#         pull(value) %>%
-#         str_split('_') %>%
+#         sec_info$description |>
+#         filter(name == 'GROUP') |>
+#         pull(value) |>
+#         str_split('_') |>
 #         unlist()
 #
 #     return(list(engine = engine_market[1], market = engine_market[2]))
@@ -19,7 +19,7 @@ determine_primary_board_path <- function(secid, ...) {
         abort(glue('Cannot determine primary board for secid = {secid}: no is_primary column exists.'))
     }
     primary_boards <-
-        sec_info$boards %>%
+        sec_info$boards |>
         filter(is_primary == 1)
     if (nrow(primary_boards) != 1) {
         abort(glue('Cannot determine primary board for secid = {secid}: more than one primary board exist.'))

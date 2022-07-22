@@ -59,12 +59,12 @@ get_candles <- function(secid, from, till = NULL, interval = 'monthly', ...) {
             ...
         )
         secid_candles_df <-
-            iss_response$candles %>%
+            iss_response$candles |>
             add_column(secid = secid, .before = 1)
         return(secid_candles_df)
     }
 
-    candles_df <- secid %>% map_dfr(function(secid) get_secid_candles(secid))
+    candles_df <- secid |> map_dfr(function(secid) get_secid_candles(secid))
 
     return(candles_df)
 }
@@ -105,13 +105,13 @@ get_candle_borders <- function(secid, ...) {
             ...
         )
         secid_candle_borders_df <-
-            iss_response$borders %>%
-            left_join(iss_response$durations, by = 'interval') %>%
+            iss_response$borders |>
+            left_join(iss_response$durations, by = 'interval') |>
             add_column(secid = secid, .before = 1)
         return(secid_candle_borders_df)
     }
 
-    candleborders_df <- secid %>% map_dfr(function(secid) get_secid_candle_borders(secid))
+    candleborders_df <- secid |> map_dfr(function(secid) get_secid_candle_borders(secid))
 
     return(candleborders_df)
 }

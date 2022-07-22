@@ -17,7 +17,7 @@ Plot Candles
 }
 \examples{
 \dontrun{
-get_candles(secid = 'SBER', from = '2020-01-01') \%>\%
+get_candles(secid = 'SBER', from = '2020-01-01') |>
     plot_candles()
 }
 }

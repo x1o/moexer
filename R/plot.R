@@ -7,11 +7,11 @@
 #'
 #' @examples
 #' \dontrun{
-#' get_candles(secid = 'SBER', from = '2020-01-01') %>%
+#' get_candles(secid = 'SBER', from = '2020-01-01') |>
 #'     plot_candles()
 #' }
 plot_candles <- function(candles_df) {
-    candles_df %>%
+    candles_df |>
         mutate(
             direction = factor(case_when(
                 open <= close ~
@@ -19,7 +19,7 @@ plot_candles <- function(candles_df) {
                 TRUE ~
                     'down'
             ))
-        ) %>%
+        ) |>
         ggplot2::ggplot() +
         ggplot2::geom_boxplot(
             ggplot2::aes(
