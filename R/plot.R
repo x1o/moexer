@@ -1,6 +1,7 @@
 #' Plot Candles
 #'
-#' @param candles_df A candles tibble as returned by [get_candles]
+#' @param x A candles tibble as returned by [get_candles()]
+#' @param ... For compatibility with the generic; ignored
 #'
 #' @return A `ggplot2` object.
 #' @export
@@ -10,8 +11,8 @@
 #' get_candles(secid = 'SBER', from = '2020-01-01') |>
 #'     plot()
 #' }
-plot.MoexCandles <- function(candles_df) {
-    candles_df |>
+plot.MoexCandles <- function(x, ...) {
+    x |>
         mutate(
             direction = factor(case_when(
                 open <= close ~

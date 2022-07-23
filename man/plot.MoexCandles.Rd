@@ -4,10 +4,12 @@
 \alias{plot.MoexCandles}
 \title{Plot Candles}
 \usage{
-\method{plot}{MoexCandles}(candles_df)
+\method{plot}{MoexCandles}(x, ...)
 }
 \arguments{
-\item{candles_df}{A candles tibble as returned by \link{get_candles}}
+\item{x}{A candles tibble as returned by \code{\link[=get_candles]{get_candles()}}}
+
+\item{...}{For compatibility with the generic; ignored}
 }
 \value{
 A \code{ggplot2} object.
