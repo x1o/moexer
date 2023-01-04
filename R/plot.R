@@ -21,9 +21,9 @@ plot.MoexCandles <- function(x, ...) {
                     'down'
             ))
         ) |>
-        ggplot2::ggplot() +
-        ggplot2::geom_boxplot(
-            ggplot2::aes(
+        ggplot() +
+        geom_boxplot(
+            aes(
                 x = begin,
                 lower = pmin(open, close),
                 upper = pmax(open, close),
@@ -36,5 +36,5 @@ plot.MoexCandles <- function(x, ...) {
             stat = 'identity',
             fatten = 0
         ) +
-        ggplot2::facet_grid(cols = vars(secid))
+        facet_grid(cols = vars(secid))
 }

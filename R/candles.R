@@ -30,11 +30,11 @@
 #' }
 get_candles <- function(secid, from, till = NULL, interval = 'monthly', ...) {
     if (!is.date(from)) {
-        from <- lubridate::as_date(from)
+        from <- as_date(from)
         assert_that(!is.na(from))
     }
     if (!is.null(till) && !is.date(till)) {
-        till <- lubridate::as_date(till)
+        till <- as_date(till)
         assert_that(!is.na(till))
     }
 
@@ -58,17 +58,13 @@ get_candles <- function(secid, from, till = NULL, interval = 'monthly', ...) {
             params = list(from = from, till = till, interval = interval_num),
             ...
         )
-        secid_candles_df <-
-            iss_response$candles |>
+        iss_response$candles |>
             add_column(secid = secid, .before = 1)
-        return(secid_candles_df)
     }
 
-    candles_df <- secid |>
-        map_dfr(function(secid) get_secid_candles(secid)) |>
+    secid |>
+        map_dfr(get_secid_candles) |>
         append_class('MoexCandles')
-
-    return(candles_df)
 }
 
 
@@ -106,16 +102,12 @@ get_candle_borders <- function(secid, ...) {
             ),
             ...
         )
-        secid_candle_borders_df <-
-            iss_response$borders |>
+        iss_response$borders |>
             left_join(iss_response$durations, by = 'interval') |>
             add_column(secid = secid, .before = 1)
-        return(secid_candle_borders_df)
     }
 
-    candleborders_df <- secid |> map_dfr(function(secid) get_secid_candle_borders(secid))
-
-    return(candleborders_df)
+    secid |> map_dfr(get_secid_candle_borders)
 }
 
 
@@ -139,6 +131,5 @@ get_candle_durations <- function(...) {
         params = list(iss.only = 'durations'),
         ...
     )
-
-    return(iss_response$durations)
+    iss_response$durations
 }

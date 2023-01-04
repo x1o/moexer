@@ -33,9 +33,7 @@ query_iss <- function(
     iss_param_str <-
         params |>
         compact() |>
-        imap_chr(function(val, name) {
-            glue('{name}={val}')
-        }) |>
+        imap_chr(\(val, name) glue('{name}={val}')) |>
         paste0(collapse = '&')
     if (str_length(iss_param_str) > 0) {
         iss_query_url <- glue('{iss_query_url}?{iss_param_str}')
@@ -79,18 +77,15 @@ query_iss <- function(
         }
     }
 
-    return(resp_parsed)
+    resp_parsed
 }
 
 
 parse_iss_json_reponse <- function(iss_json_response) {
-    parsed_list <-
-        iss_json_response |>
+    iss_json_response |>
         httr::content('text') |>
         jsonlite::fromJSON(simplifyVector = TRUE, simplifyMatrix = FALSE) |>
-        map(~ parse_iss_response_section(.x))
-
-    return(parsed_list)
+        map(parse_iss_response_section)
 }
 
 
@@ -103,28 +98,27 @@ parse_iss_response_section <- function(iss_response_section) {
         parse_fn <-
             switch(
                 data_type,
-                string = readr::parse_character,
-                int32 = readr::parse_double,
-                int64 = readr::parse_double,
+                string = parse_character,
+                int32 = parse_double,
+                int64 = parse_double,
                 # int32 = function(x) x,
                 # int64 = function(x) x,
-                date = readr::parse_date,
-                datetime = readr::parse_datetime,
-                double = readr::parse_double,
-                time = readr::parse_time,
+                date = parse_date,
+                datetime = parse_datetime,
+                double = parse_double,
+                time = parse_time,
                 undefined = {
                     cli_alert_warning(glue(
                         '"{col_name}": Undefined type (parsed as character)'
                     ))
-                    readr::parse_character
+                    parse_character
                 },
                 abort(glue('"{col_name}": Unknown type "{data_type}"'))
             )
-        return(parse_fn(col))
+        parse_fn(col)
     }
 
-    parsed_section <-
-        iss_response_section$data |>
+    iss_response_section$data |>
         transpose(.names = iss_response_section$columns) |>
         imap(function(list_column, column_name) {
             list_column |>
@@ -132,6 +126,4 @@ parse_iss_response_section <- function(iss_response_section) {
                 parse_type(column_name)
         }) |>
         as_tibble()
-
-    return(parsed_section)
 }

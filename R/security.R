@@ -19,7 +19,7 @@ search_security <- function(query, ...) {
         ...
     )
 
-    return(iss_response$securities)
+    iss_response$securities
 }
 
 
@@ -40,10 +40,8 @@ search_security <- function(query, ...) {
 #' get_security_info(secid = 'SBER')
 #' }
 get_security_info <- function(secid, ...) {
-    iss_response <- query_iss(
+    query_iss(
         rest_path = glue('securities/{secid}'),
         ...
     )
-
-    return(iss_response)
 }

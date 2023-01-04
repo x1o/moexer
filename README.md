@@ -50,18 +50,18 @@ search_security(query = 'Sberbank') |>
     select(secid, name, is_traded, type, primary_boardid)
 ```
 
-| secid    | name                           | is_traded | type            | primary_boardid |
-|:---------|:-------------------------------|----------:|:----------------|:----------------|
-| SBER     | Сбербанк России ПАО ао         |         1 | common_share    | TQBR            |
-| SBERP    | Сбербанк России ПАО ап         |         1 | preferred_share | TQBR            |
-| SRU2     | Фьючерсный контракт SBRF-9.22  |         1 | futures         | RFUD            |
-| SRM2     | Фьючерсный контракт SBRF-6.22  |         0 | futures         | RFUD            |
-| SPU2     | Фьючерсный контракт SBPR-9.22  |         1 | futures         | RFUD            |
-| SRZ2     | Фьючерсный контракт SBRF-12.22 |         1 | futures         | RFUD            |
-| SPM2     | Фьючерсный контракт SBPR-6.22  |         0 | futures         | RFUD            |
-| RLU2     | Фьючерсный контракт RUAL-9.22  |         1 | futures         | RFUD            |
-| RLM2     | Фьючерсный контракт RUAL-6.22  |         0 | futures         | RFUD            |
-| RUAL_CLT | RUAL_CLT                       |         0 | futures         | RFUD            |
+| secid        | name                      | is_traded | type            | primary_boardid |
+|:-------------|:--------------------------|----------:|:----------------|:----------------|
+| SBER         | Сбербанк России ПАО ао    |         1 | common_share    | TQBR            |
+| SBERP        | Сбербанк России ПАО ап    |         1 | preferred_share | TQBR            |
+| RU000A103WV8 | Сбербанк ПАО 001Р-SBER33  |         1 | exchange_bond   | TQCB            |
+| RU000A102RS6 | Сбербанк ПАО 001Р-SBER24  |         1 | exchange_bond   | TQCB            |
+| RU000A101QW2 | Сбербанк ПАО 001Р-SBER16  |         1 | exchange_bond   | TQCB            |
+| RU000A101C89 | Сбербанк ПАО 001Р-SBER15  |         1 | exchange_bond   | TQCB            |
+| RU000A102CU4 | Сбербанк ПАО 001Р-SBER19  |         1 | exchange_bond   | TQCB            |
+| RU000A1025U5 | Сбербанк ПАО 001Р-SBER17  |         1 | exchange_bond   | TQCB            |
+| RU000A103YM3 | Сбербанк ПАО 002Р-green01 |         1 | exchange_bond   | TQCB            |
+| RU000A0ZZ117 | Сбербанк ПАО БО 001Р-06R  |         1 | exchange_bond   | TQCB            |
 
 We can verify that `SBER` is indeed the symbol we were looking for and
 check the profile information:
@@ -102,21 +102,22 @@ sber_info$boards |>
 
 | secid | boardid | title                                      | is_traded | history_from | history_till | currencyid |
 |:------|:--------|:-------------------------------------------|----------:|:-------------|:-------------|:-----------|
-| SBER  | TQBR    | Т+: Акции и ДР - безадрес.                 |         1 | 2013-03-25   | 2022-07-21   | RUB        |
+| SBER  | TQBR    | Т+: Акции и ДР - безадрес.                 |         1 | 2013-03-25   | 2023-01-03   | RUB        |
 | SBER  | EQBR    | Основной режим: А1-Акции и паи - безадрес. |         0 | 2011-11-21   | 2013-08-30   | RUB        |
-| SBER  | SPEQ    | Поставка по СК (акции)                     |         1 | 2018-06-29   | 2022-06-17   | RUB        |
-| SBER  | SMAL    | Т+: Неполные лоты (акции) - безадрес.      |         1 | 2011-11-21   | 2022-07-21   | RUB        |
+| SBER  | SPEQ    | Поставка по СК (акции)                     |         1 | 2018-06-29   | 2022-12-16   | RUB        |
+| SBER  | SMAL    | Т+: Неполные лоты (акции) - безадрес.      |         1 | 2011-11-21   | 2023-01-03   | RUB        |
 | SBER  | TQDP    | Крупные пакеты - Акции - безадрес.         |         1 | NA           | NA           | RUB        |
 | SBER  | EQDP    | Крупные пакеты - Акции - безадрес.         |         0 | 2011-12-12   | 2019-03-01   | RUB        |
-| SBER  | RPMO    | РЕПО-М - адрес.                            |         1 | 2019-04-22   | 2022-07-21   | RUB        |
-| SBER  | PTEQ    | РПС с ЦК: Акции и ДР - адрес.              |         1 | 2013-03-26   | 2022-07-21   | RUB        |
-| SBER  | MXBD    | MOEX Board                                 |         0 | 2015-08-03   | 2022-07-21   | NA         |
+| SBER  | RPMO    | РЕПО-М - адрес.                            |         1 | 2019-04-22   | 2023-01-03   | RUB        |
+| SBER  | PTEQ    | РПС с ЦК: Акции и ДР - адрес.              |         1 | 2013-03-26   | 2023-01-03   | RUB        |
+| SBER  | MXBD    | MOEX Board                                 |         0 | 2015-08-03   | 2023-01-04   | NA         |
 | SBER  | CLMR    | Classica - безадрес.                       |         0 | 2012-02-13   | 2015-07-31   | RUB        |
 
 Fetch the `SBER` candles:
 
 ``` r
-get_candles(secid = 'SBER', from = '2020-01-01', interval = 'monthly') |> head()
+get_candles(secid = 'SBER', from = '2020-01-01', till = '2022-01-01', interval = 'monthly') |> 
+    head()
 ```
 
 | secid |   open |  close |   high |    low |        value |     volume | begin      | end        |
@@ -134,7 +135,12 @@ object has class `MoexCandles` for which there’s an appropriate `plot()`
 method:
 
 ``` r
-get_candles(secid = c('SBER', 'SBERP'), from = '2020-01-01', interval = 'monthly') |> 
+get_candles(
+    secid = c('SBER', 'SBERP'), 
+    from = '2020-01-01', 
+    till = '2022-01-01', 
+    interval = 'monthly'
+) |> 
     plot()
 ```
 

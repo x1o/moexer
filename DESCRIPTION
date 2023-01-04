@@ -10,7 +10,7 @@ Description: This is a thin wrapper around the 'MOEX' 'ISS' REST interface, see
 License: GPL-3
 Language: en-GB
 Encoding: UTF-8
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.3
 Depends: R (>= 4.2.0)
 Imports: 
     glue,
@@ -24,12 +24,12 @@ Imports:
     assertthat,
     cli,
     dplyr,
-    lubridate
+    lubridate,
+    ggplot2
 Roxygen: list(markdown = TRUE)
 Suggests: 
     testthat,
     knitr,
-    rmarkdown,
-    ggplot2
+    rmarkdown
 URL: https://github.com/x1o/moexer
 BugReports: https://github.com/x1o/moexer/issues
