@@ -60,8 +60,8 @@ search_security(query = 'Sberbank') |>
 | RU000A101C89 | Сбербанк ПАО 001Р-SBER15  |         1 | exchange_bond   | TQCB            |
 | RU000A102CU4 | Сбербанк ПАО 001Р-SBER19  |         1 | exchange_bond   | TQCB            |
 | RU000A1025U5 | Сбербанк ПАО 001Р-SBER17  |         1 | exchange_bond   | TQCB            |
+| RU000A103G75 | Сбербанк ПАО 001Р-SBER32  |         1 | exchange_bond   | TQCB            |
 | RU000A103YM3 | Сбербанк ПАО 002Р-green01 |         1 | exchange_bond   | TQCB            |
-| RU000A0ZZ117 | Сбербанк ПАО БО 001Р-06R  |         1 | exchange_bond   | TQCB            |
 
 We can verify that `SBER` is indeed the symbol we were looking for and
 check the profile information:
@@ -102,15 +102,15 @@ sber_info$boards |>
 
 | secid | boardid | title                                      | is_traded | history_from | history_till | currencyid |
 |:------|:--------|:-------------------------------------------|----------:|:-------------|:-------------|:-----------|
-| SBER  | TQBR    | Т+: Акции и ДР - безадрес.                 |         1 | 2013-03-25   | 2023-01-03   | RUB        |
+| SBER  | TQBR    | Т+: Акции и ДР - безадрес.                 |         1 | 2013-03-25   | 2023-01-06   | RUB        |
 | SBER  | EQBR    | Основной режим: А1-Акции и паи - безадрес. |         0 | 2011-11-21   | 2013-08-30   | RUB        |
 | SBER  | SPEQ    | Поставка по СК (акции)                     |         1 | 2018-06-29   | 2022-12-16   | RUB        |
-| SBER  | SMAL    | Т+: Неполные лоты (акции) - безадрес.      |         1 | 2011-11-21   | 2023-01-03   | RUB        |
+| SBER  | SMAL    | Т+: Неполные лоты (акции) - безадрес.      |         1 | 2011-11-21   | 2023-01-06   | RUB        |
 | SBER  | TQDP    | Крупные пакеты - Акции - безадрес.         |         1 | NA           | NA           | RUB        |
 | SBER  | EQDP    | Крупные пакеты - Акции - безадрес.         |         0 | 2011-12-12   | 2019-03-01   | RUB        |
-| SBER  | RPMO    | РЕПО-М - адрес.                            |         1 | 2019-04-22   | 2023-01-03   | RUB        |
-| SBER  | PTEQ    | РПС с ЦК: Акции и ДР - адрес.              |         1 | 2013-03-26   | 2023-01-03   | RUB        |
-| SBER  | MXBD    | MOEX Board                                 |         0 | 2015-08-03   | 2023-01-04   | NA         |
+| SBER  | RPMO    | РЕПО-М - адрес.                            |         1 | 2019-04-22   | 2023-01-06   | RUB        |
+| SBER  | PTEQ    | РПС с ЦК: Акции и ДР - адрес.              |         1 | 2013-03-26   | 2023-01-06   | RUB        |
+| SBER  | MXBD    | MOEX Board                                 |         0 | 2015-08-03   | 2023-01-06   | NA         |
 | SBER  | CLMR    | Classica - безадрес.                       |         0 | 2012-02-13   | 2015-07-31   | RUB        |
 
 Fetch the `SBER` candles:
