@@ -9,11 +9,12 @@ get_candles(secid, from, till = NULL, interval = "monthly", ...)
 \arguments{
 \item{secid}{A vector of security ID's.}
 
-\item{from}{A \link[lubridate:date]{lubridate::date} object or a character that can be coerced to
-it.}
+\item{from}{A date or a datetime object, or something that can be coerced to
+it with \link[readr:parse_datetime]{readr::parse_date} or \link[readr:parse_datetime]{readr::parse_datetime}.}
 
-\item{till}{A \link[lubridate:date]{lubridate::date} object or a character that can be coerced to
-it.}
+\item{till}{A date or a datetime object, or something that can be coerced to
+it with \link[readr:parse_datetime]{readr::parse_date} or \link[readr:parse_datetime]{readr::parse_datetime}, or \code{NULL}.  If
+\code{NULL}, interpreted by ISS as "today".}
 
 \item{interval}{A character value specifying the candle duration (see
 \code{moexer.candle.intervals} option.)}
@@ -21,8 +22,8 @@ it.}
 \item{...}{Further arguments to \link{query_iss}.}
 }
 \value{
-A tibble as with candles in HLOCV format, plus a column with the
-corresponding security ID.
+A tibble as with candles in OHLCV format, prepended with a column
+containing the corresponding security ID.
 }
 \description{
 REST path:
@@ -32,13 +33,33 @@ REST path:
 \details{
 To get the \code{engine-market-board} path a separate \link{get_security_info} query is
 made and the board with \code{is_primary = 1} is selected.
+
+All candles for the specified period will be fetched, see \link{fetching_fully}.
 }
 \examples{
 \dontrun{
+# Get daily candles for `SBER`, `FXGD` from 2020-01-01 until today. Note that
+# an unknown symbol `XXXX` is skipped with a warning.
 get_candles(
     secid = c('XXXX', 'SBER', 'FXGD'),
     from = '2020-01-01',
-    debug = TRUE
+    debug_output = TRUE
+)
+
+# Get SBER minute candles for one trading day (all 526 of them)
+get_candles(
+    secid = 'SBER',
+    from = '2020-01-10',
+    till = '2020-01-10',
+    interval = 'per_minute'
+)
+
+# Get SBER minute candles for the specified time period (1 hour)
+get_candles(
+    secid = 'SBER',
+    from = '2020-01-10 11:00:00',
+    till = '2020-01-10 12:00:00',
+    interval = 'per_minute'
 )
 }
 }

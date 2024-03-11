@@ -4,33 +4,21 @@
 \alias{query_iss}
 \title{Submit a REST Query to ISS}
 \usage{
-query_iss(
-  rest_path,
-  params = list(),
-  iss_base_url = getOption("moexer.iss.base_url"),
-  debug_output = getOption("moexer.debug"),
-  follow_cursor = TRUE
-)
+query_iss(rest_path, params = list(), debug_output = getOption("moexer.debug"))
 }
 \arguments{
-\item{rest_path}{A REST path concatenated to \code{iss_base_url}.}
+\item{rest_path}{A REST path appended to \code{iss_base_url}.}
 
-\item{params}{A HTTP GET query parameters string passed as a \code{list}.}
-
-\item{iss_base_url}{The base ISS URL.}
+\item{params}{A HTTP GET query parameters string, passed as a \code{list} (not
+URL-escaped!)}
 
 \item{debug_output}{Print REST URLs as they are queried.}
-
-\item{follow_cursor}{If \code{TRUE}, iterative queries will be issued to fetch all
-section pages as indicated by \verb{<section>.cursor}; the cursor section
-itself will be removed from the response.}
 }
 \value{
-A list where every element is section as returned by ISS.  The
-section content is parsed as a \code{tibble}.
+A list of tibbles, corresponding to the blocks in the response.
 }
 \description{
-See \url{http://iss.moex.com/iss/reference/} for the reference.
+See \url{http://iss.moex.com/iss/reference/} for the list of available endpoints.
 }
 \examples{
 \dontrun{

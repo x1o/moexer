@@ -1,7 +1,7 @@
 Package: moexer
 Type: Package
 Title: Interact with Moscow Exchange Informational and Statistical Server ('ISS')
-Version: 0.2.0
+Version: 0.2.0.9000
 Author: Dmitry Zotikov <dmitry.zotikov@ungrund.org>
 Maintainer: Dmitry Zotikov <dmitry.zotikov@ungrund.org>
 Description: This is a thin wrapper around the 'MOEX' 'ISS' REST interface, see

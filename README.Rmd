@@ -8,25 +8,22 @@ output:
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#> ",
-  fig.path = "man/figures/README-"
-  # out.width = "100%"
+    collapse = TRUE,
+    comment = "#> ",
+    fig.path = "man/figures/README-"
+    # out.width = "100%"
 )
 ```
 
 # moexer
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
-Moscow Exchange (MOEX) provides a REST interface
-to its Informational and Statistical Server (ISS), see https://fs.moex.com/files/8888.
+Moscow Exchange (MOEX) provides a REST interface to its Informational and Statistical Server (ISS), see <https://fs.moex.com/files/8888>.
 
-`moexer` is a thin wrapper around the REST interface.  It allows to quickly 
-fetch e.g. price candles for a particular security, obtain its profile 
-information and so on.  The data is returned as `tibble`s, making it easy to 
-subsequently process and analyse it.
+`moexer` is a thin wrapper around the REST interface. It allows to quickly fetch e.g. price candles for a particular security, obtain its profile information and so on. The data is returned as `tibble`s, making it easy to subsequently process and analyse it.
 
 ## Installation
 
@@ -42,18 +39,17 @@ or the latest version from github:
 devtools::install_github("x1o/moexer")
 ```
 
-## Example
+## High-Level Interface to ISS
 
-Suppose you want to download monthly candles from Jan 1, 2020 until the present 
-day for the Sberbank common shares.
+Suppose you want to download monthly candles from Jan 1, 2020 until the present day for the Sberbank common shares.
 
 ```{r message=FALSE}
 library(moexer)
 library(dplyr)
+library(purrr)
 ```
 
-Each security on MOEX has an ID, e.g. a 4-letter ticker symbol for a share
-("LKOH") or an ISIN for a bond ("RU000A0JXPU3").
+Each security on MOEX has an ID, e.g. a 4-letter ticker symbol for a share ("`LKOH`") or an ISIN for a bond ("`RU000A0JXPU3`").
 
 Find the corresponding security ID:
 
@@ -81,9 +77,13 @@ get_candles(secid = 'SBER', from = '2020-01-01', till = '2022-01-01', interval =
     head()
 ```
 
-`get_candles()` is vectorised over `secid`, so it is possible to, say, fetch 
-candles for both the common and the preferred shares.  The returned object has
-class `MoexCandles` for which there's an appropriate `plot()` method:
+`get_candles()` also supports specifying date-times for the `from`, `till` arguments,
+e.g. `'2020-01-01 09:00:00'`.  This is most useful for obtaining intraday candles,
+e.g with `interval = 'hourly'` --- see `options('moexer.candle.intervals')`.
+
+If `till = NULL`, all candles up to today are fetched.
+
+`get_candles()` is vectorised over `secid`, so it is possible to, say, fetch candles for both the common and the preferred shares. The returned object has class `MoexCandles` for which there's an appropriate `plot()` method:
 
 ```{r}
 get_candles(
@@ -95,3 +95,153 @@ get_candles(
     plot()
 ```
 
+## Low-level Interface to ISS
+
+### Request
+
+ISS is accessed via HTTP and/or HTTPS.
+
+The interface is "RESTful", meaning the endpoint parameters can be passed as a query string, but they form the path of the URL. For instance, to receive `SBER` candles, one would need to form a URL as below:
+
+```         
+<base_url>/securities/SBER/candles?from=2020-01-10&till=2020-01-17
+```
+
+For a list of all public endpoints, see <http://iss.moex.com/iss/reference/>.
+
+### Response
+
+ISS is capable of return data in several formats; the present package uses JSON internally.
+
+Every response consists of named sections ("blocks").
+
+Every block contains the following sub-sections:
+
+-   `metadata` with types
+-   `column` with column names
+-   `data` with the actual payload
+
+All response blocks are parsed as tibbles using the information above.
+
+### Query String Parameters
+
+The parameters can be applied to some sections (1), all section (2) or modify "system" ISS parameters (3).
+
+1.  `<block>.<parameter>`=`<value>` (applicable for block `<block>`)
+    -   `<block>.columns`=`<id_1>,<id_2>,...`: only select these column in the block `<block>`
+2.  `<parameter>`=`<value>` (all response blocks)
+3.  `iss.<parameter>`=`<value>` (system parameter)
+    -   `iss.only`=`<block_1>,<block_2>,...`: only return these blocks
+
+### Examples
+
+The main function for working with low-level requests is `query_iss()`.
+
+#### Simple Queries
+
+Fetch possible values for certain market objects. This returns a list of sections such as `engines`, `markets`, etc, each being a dataframe.
+
+```{r}
+iss_index <- query_iss('index')
+names(iss_index)
+```
+
+```{r}
+iss_index$engines
+```
+
+Query string parameters are specified as `params` argument; `debug_output = TRUE` results in the request URL being printed:
+
+```{r}
+df <- query_iss(
+    'index',
+    params = list(
+        iss.only = 'engines,markets', 
+        markets.columns = 'id,market_name,market_title'
+    ),
+    debug_output = TRUE
+)
+df$engines |> head()
+df$markets |> head()
+```
+
+```{r}
+show_df <- function(df) {
+    print(nrow(df))
+    bind_rows(head(df), tail(df))
+}
+```
+
+#### Queries Involving Cursor
+
+Some queries return large responses, which are split into pages that must accessed using `start` query string parameter as indicated in the auxiliary section `history.cursor`, also returned by ISS:
+
+```{r}
+df <- query_iss(
+    'history/engines/stock/markets/shares/securities/MOEX',
+    params = list(
+        from = '2021-09-01',
+        till = '2021-12-31',
+        start = 10
+    )
+)
+show_df(df$history[,1:10])
+df$history.cursor
+```
+
+An adverb `following_cursor()` decorates `query_iss()` to follow the cursor until the requested information is received completely. The `.cursor` dataframe is dropped.
+
+```{r}
+following_cursor(query_iss)(
+    'history/engines/stock/markets/shares/securities/MOEX',
+    params = list(
+        from = '2021-09-01',
+        till = '2021-12-31',
+        start = 10
+    )
+) |> 
+    pluck('history') |> 
+    select(1:10) |> 
+    show_df()
+```
+
+#### Queries With Automatical `start` Increment
+
+Some responses are large yet are not accompanied by a `.cursor` block.
+
+```{r}
+query_iss(
+    'engines/stock/markets/shares/boards/TQBR/securities/SBER/candles',
+    params = list(
+        from = URLencode('2020-01-10 10:00:00'),
+        till = URLencode('2020-01-10 23:59:59'),
+        interval = 1,
+        start = 10
+    ),
+    debug_output = TRUE
+) |> 
+    pluck('candles') |> 
+    show_df()
+```
+
+These queries may accessed by `query_iss()` wrapped into `fetching_fully` decorator, which automatically increases the value of `start` parameter until no more data is received:
+
+```{r}
+fetching_fully(query_iss)(
+    'engines/stock/markets/shares/boards/TQBR/securities/SBER/candles',
+    params = list(
+       from = URLencode('2020-01-10 10:00:00'),
+       till = URLencode('2020-01-10 23:59:59'),
+       interval = 1,
+       start = 10
+    )
+) |> 
+    pluck('candles') |> 
+    show_df()
+```
+
+Some endpoints do not support `start` parameter -- `fetching_fully()` knows how to handle that:
+
+```{r}
+fetching_fully(query_iss)('turnovers', params = list(iss.only = 'turnovers'))$turnovers
+```
