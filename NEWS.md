@@ -1,3 +1,5 @@
+# moexer (development version)
+
 # moexer 0.3.0
 
 * Implement fetching data by automatically incrementing `start` parameter
