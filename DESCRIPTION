@@ -2,7 +2,9 @@ Package: moexer
 Type: Package
 Title: Interact with Moscow Exchange Informational and Statistical Server ('ISS')
 Version: 0.2.0.9000
-Author: Dmitry Zotikov <dmitry.zotikov@ungrund.org>
+Authors@R: 
+    person("Dmitry", "Zotikov", email = "dmitry.zotikov@ungrund.org",
+           role = c("aut", "cre", "cph"))
 Maintainer: Dmitry Zotikov <dmitry.zotikov@ungrund.org>
 Description: This is a thin wrapper around the 'MOEX' 'ISS' REST interface, see
     <https://iss.moex.com>.  It allows to quickly fetch price candles for a 
