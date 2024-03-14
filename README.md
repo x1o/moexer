@@ -113,15 +113,15 @@ sber_info$boards |>
 
 | secid | boardid | title                                      | is_traded | history_from | history_till | currencyid |
 |:------|:--------|:-------------------------------------------|----------:|:-------------|:-------------|:-----------|
-| SBER  | TQBR    | Т+: Акции и ДР - безадрес.                 |         1 | 2013-03-25   | 2024-03-11   | RUB        |
+| SBER  | TQBR    | Т+: Акции и ДР - безадрес.                 |         1 | 2013-03-25   | 2024-03-13   | RUB        |
 | SBER  | EQBR    | Основной режим: А1-Акции и паи - безадрес. |         0 | 2011-11-21   | 2013-08-30   | RUB        |
 | SBER  | SPEQ    | Поставка по СК (акции)                     |         1 | 2018-06-29   | 2023-12-22   | RUB        |
-| SBER  | SMAL    | Т+: Неполные лоты (акции) - безадрес.      |         1 | 2011-11-21   | 2024-03-11   | RUB        |
+| SBER  | SMAL    | Т+: Неполные лоты (акции) - безадрес.      |         1 | 2011-11-21   | 2024-03-13   | RUB        |
 | SBER  | TQDP    | Крупные пакеты - Акции - безадрес.         |         0 | NA           | NA           | RUB        |
 | SBER  | EQDP    | Крупные пакеты - Акции - безадрес.         |         0 | 2011-12-12   | 2019-03-01   | RUB        |
-| SBER  | RPMO    | РЕПО-М - адрес.                            |         1 | 2019-04-22   | 2024-03-11   | RUB        |
-| SBER  | PTEQ    | РПС с ЦК: Акции и ДР - адрес.              |         1 | 2013-03-26   | 2024-03-11   | RUB        |
-| SBER  | MXBD    | MOEX Board                                 |         0 | 2015-08-03   | 2024-03-11   | NA         |
+| SBER  | RPMO    | РЕПО-М - адрес.                            |         1 | 2019-04-22   | 2024-03-13   | RUB        |
+| SBER  | PTEQ    | РПС с ЦК: Акции и ДР - адрес.              |         1 | 2013-03-26   | 2024-03-13   | RUB        |
+| SBER  | MXBD    | MOEX Board                                 |         0 | 2015-08-03   | 2024-03-13   | NA         |
 | SBER  | CLMR    | Classica - безадрес.                       |         0 | 2012-02-13   | 2015-07-31   | RUB        |
 
 </div>
@@ -177,7 +177,7 @@ get_candles(
 ISS is accessed via HTTP and/or HTTPS.
 
 The interface is “RESTful”, meaning the endpoint parameters can be
-passed as a query string, but they form the path of the URL. For
+passed as a query string, but they also form the path of the URL. For
 instance, to receive `SBER` candles, one would need to form a URL as
 below:
 
@@ -188,7 +188,7 @@ For a list of all public endpoints, see
 
 ### Response
 
-ISS is capable of return data in several formats; the present package
+ISS is capable of returning data in several formats; the present package
 uses JSON internally.
 
 Every response consists of named sections (“blocks”).
@@ -482,13 +482,13 @@ fetching_fully(query_iss)('turnovers', params = list(iss.only = 'turnovers'))$tu
 
 | NAME      |   ID |     VALTODAY | VALTODAY_USD | NUMTRADES | UPDATETIME          | TITLE                            |
 |:----------|-----:|-------------:|-------------:|----------:|:--------------------|:---------------------------------|
-| stock     |    1 | 2702212.5503 | 29817.451992 |   1898455 | 2024-03-12 13:15:41 | Фондовый рынок и рынок депозитов |
-| currency  |    3 |  961403.1222 | 10608.562764 |     91763 | 2024-03-12 13:15:41 | Валютный рынок                   |
-| futures   |    4 |  166537.2800 |  1837.648690 |    489371 | 2024-03-12 13:15:42 | Срочный рынок                    |
-| commodity |    5 |           NA |           NA |        NA | 2024-03-12 07:00:00 | Товарный рынок                   |
-| agro      |    9 |     278.0831 |     3.068497 |        47 | 2024-03-12 13:10:00 | Агро                             |
-| otc       | 1012 |     831.2027 |     9.171872 |      1324 | 2024-03-12 13:15:37 | ОТС с ЦК                         |
-| quotes    | 1282 |           NA |           NA |        NA | 2024-03-12 09:30:01 | Квоты                            |
-| TOTALS    |   NA | 3831262.2384 | 42275.903815 |   2480960 | 2024-03-12 13:15:42 | Всего по Московской Бирже        |
+| stock     |    1 | 9.897573e+05 |  10811.71471 |    564420 | 2024-03-14 10:50:33 | Фондовый рынок и рынок депозитов |
+| currency  |    3 | 5.758771e+05 |   6290.65148 |     34415 | 2024-03-14 10:50:33 | Валютный рынок                   |
+| futures   |    4 | 9.605037e+04 |   1049.21596 |    307945 | 2024-03-14 10:50:33 | Срочный рынок                    |
+| commodity |    5 |           NA |           NA |        NA | 2024-03-14 07:00:00 | Товарный рынок                   |
+| agro      |    9 |           NA |           NA |        NA | 2024-03-14 10:30:03 | Агро                             |
+| otc       | 1012 | 2.767398e+00 |      0.03023 |       928 | 2024-03-14 10:50:33 | ОТС с ЦК                         |
+| quotes    | 1282 |           NA |           NA |        NA | 2024-03-14 09:30:01 | Квоты                            |
+| TOTALS    |   NA | 1.661688e+06 |  18151.61237 |    907708 | 2024-03-14 10:50:33 | Всего по Московской Бирже        |
 
 </div>

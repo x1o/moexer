@@ -101,7 +101,7 @@ get_candles(
 
 ISS is accessed via HTTP and/or HTTPS.
 
-The interface is "RESTful", meaning the endpoint parameters can be passed as a query string, but they form the path of the URL. For instance, to receive `SBER` candles, one would need to form a URL as below:
+The interface is "RESTful", meaning the endpoint parameters can be passed as a query string, but they also form the path of the URL. For instance, to receive `SBER` candles, one would need to form a URL as below:
 
 ```         
 <base_url>/securities/SBER/candles?from=2020-01-10&till=2020-01-17
@@ -111,7 +111,7 @@ For a list of all public endpoints, see <http://iss.moex.com/iss/reference/>.
 
 ### Response
 
-ISS is capable of return data in several formats; the present package uses JSON internally.
+ISS is capable of returning data in several formats; the present package uses JSON internally.
 
 Every response consists of named sections ("blocks").
 
